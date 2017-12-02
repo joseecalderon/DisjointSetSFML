@@ -1,4 +1,4 @@
-#ifndef __NODO_H__
+ï»¿#ifndef __NODO_H__
 #define __NODO_H__
 #include "Algoritmo.h"
 #include <SFML/Graphics.hpp>
@@ -21,24 +21,26 @@ public:
 	string num = "";
 	sf::Font fuente;
 	vector <Nodo*> nodoHijo;
+	sf::Color colorNodo;
 
 public:
 	Nodo() {}
-	Nodo(int size, float x, float y, string num, sf::Font fuente) {
+	Nodo(int size, float x, float y, string num, sf::Font fuente, sf::Color colorNodo) {
 		this->alto = size;
 		this->ancho = size;
 		this->x = x;
 		this->y = y;
 		this->num = num;
 		this->fuente = fuente;
+		this->colorNodo = colorNodo;
 	}
 	void paint(sf::RenderWindow* window);
 };
-void Nodo::paint(sf::RenderWindow* window){
+void Nodo::paint(sf::RenderWindow* window) {
 	sf::Text numCirculo;
 	sf::String cadenaNum;
 
-	//Dibujar las líneas
+	//Dibujar las lï¿½neas
 	for (int i = 0; i < nodoHijo.size(); i++)
 	{
 		sf::Vertex line[] =
@@ -50,18 +52,18 @@ void Nodo::paint(sf::RenderWindow* window){
 	}
 
 	sf::CircleShape shape(25);
-	shape.setFillColor(sf::Color::White);
+	shape.setFillColor(this->colorNodo);
 	shape.setPosition(this->x, this->y);
 	window->draw(shape);
-	
-	//Seteando los números para cada círculo (shape)
+
+	//Seteando los nï¿½meros para cada cï¿½rculo (shape)
 	cadenaNum = num;
 	numCirculo.setString(cadenaNum);
-	
+
 	numCirculo.setFont(fuente);
 	numCirculo.setCharacterSize(20);
 	numCirculo.setFillColor(sf::Color::Black);
-	numCirculo.setPosition(this-> x + 15, this-> y + 15);
+	numCirculo.setPosition(this->x + 15, this->y + 15);
 	window->draw(numCirculo);
 }
 

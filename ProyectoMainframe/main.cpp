@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -17,13 +17,13 @@ struct Contexto {
 	int width, height;
 };
 
-//Método para crear el título
+//Mï¿½todo para crear el tï¿½tulo
 void newTitulo(sf::Font fuente, sf::RenderWindow * window, int width) {
-	//Crear el título para el window
+	//Crear el tï¿½tulo para el window
 	sf::Text Title;
 	sf::String nameTitle = "Union Find - Disjoint Set";
 
-	//Seteando valores al título
+	//Seteando valores al tï¿½tulo
 	Title.setString(nameTitle);
 	Title.setFont(fuente);
 	Title.setCharacterSize(40);
@@ -32,7 +32,7 @@ void newTitulo(sf::Font fuente, sf::RenderWindow * window, int width) {
 	window->draw(Title);
 }
 
-//función recursiva para crear el "árbol"
+//funciï¿½n recursiva para crear el "ï¿½rbol"
 void dibujarPosicion(int padre, float x, float y, float ancho, Contexto cx) {
 	vector <int> nodos;
 	if (padre == -1) {
@@ -58,7 +58,7 @@ void dibujarPosicion(int padre, float x, float y, float ancho, Contexto cx) {
 
 void actualizarGrafo(Contexto cx) {
 	for (int i = 0; i < cx.us->p.size(); i++) {
-		
+
 	}
 }
 
@@ -108,9 +108,10 @@ int main() {
 	std::vector<Nodo*> nodos;
 	std::queue<Move*> movimientos;
 	sf::Clock clock;
-	
+	sf::Color colorNodo = sf::Color::White;
+
 	for (int i = 0; i < us.p.size(); i++) {
-		Nodo* nodo = new Nodo(50, 0, i*50, std::to_string(us.nNodo[i]), fuente);
+		Nodo* nodo = new Nodo(50, 0, i * 50, std::to_string(us.nNodo[i]), fuente, colorNodo);
 		nodos.push_back(nodo);
 	}
 	Contexto cxt;
@@ -127,21 +128,44 @@ int main() {
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
+			if (event.type == sf::Event::Closed) {
+			window.close();
+			}
+			if (event.type == sf::Event::MouseButtonPressed){
+				if (event.mouseButton.button == sf::Mouse::Left){
+					int xMouse = event.mouseButton.x;
+					int yMouse = event.mouseButton.y;
+					for (int i = 0; i < nodos.size(); i++){
+						int xNodoIni = nodos[i]->x;
+						int yNodoIni = nodos[i]->y;
+						int xNodoFin = nodos[i]->x + 25;
+						int yNodoFin = nodos[i]->y + 25;
+						if (xNodoIni < xMouse && xNodoFin > xMouse && yNodoIni < yMouse && yNodoFin > yMouse) {
+							cout << nodos[i]->x<<endl;
+							cout << nodos[i]->y<<endl;
+							cout << nodos[i]->num << endl;
+							sf::Color colorCyan = sf::Color::Cyan;
+							sf::Color colorMagenta = sf::Color::Magenta;
 
-		sf::Time elapsed = clock.restart();
+							nodos[i]->colorNodo = colorCyan;
+							int padre = us.findSet(atoi((nodos[i]->num).c_str()));
+							nodos[padre]->colorNodo = colorMagenta;
+						}
+					}
+				}
+			}
+		}
 		window.clear(sf::Color(255, 203, 49));
 		for (int i = 0; i < nodos.size(); i++) {
 			nodos[i]->paint(&window);
 		}
 		newTitulo(fuente, &window, width);
 		window.display();
+		}
+		
+		moving.detach();
+		run_algoritmo.detach();
 
-	}
-	moving.detach();
-	run_algoritmo.detach();
-
-	return 0;
+		return 0;
+	
 }
