@@ -9,11 +9,12 @@
 using namespace std;
 class UnionFind {
 public:
-	vector<int> p, rank, setSizes, maxSizes, pinmediato;
+	vector<int> nNodo, p, rank, setSizes, maxSizes, pinmediato;
 	int numSets;
 public:
 	//Constructor
 	UnionFind() {
+		int nNodo = { 0 };
 		int p = { 0 };
 		int rank = { 0 };
 		int setSizes = { 0 };
@@ -32,7 +33,7 @@ public:
 	int setSize(int i);
 	int numDisjointSets();
 	vector <int> getPadres();
-	int getChildren(int i);
+	vector <int> getChildren(int i);
 };
 
 	void UnionFind::makeSet(int N) {
@@ -40,9 +41,11 @@ public:
 		rank.assign(N, 0);
 		p.assign(N, 0);
 		pinmediato.assign(N, 0);
+		nNodo.assign(N, 0);
 		for (int i = 0; i < N; i++) {
 			p[i] = i;
 			pinmediato[i] = i;
+			nNodo[i] = i;
 		}
 		setSizes.assign(N, 1);
 	}
@@ -54,14 +57,14 @@ public:
 	int UnionFind::findSetPinmediato(int i) {
 		return (pinmediato[i] == i) ? i : findSetPinmediato(pinmediato[i]);
 	}
-	int UnionFind::getChildren(int i) {
-		int MAX = 0;
-			if (p[i] != i) {
-				return MAX = setSizes[i]-1;
+	vector <int> UnionFind::getChildren(int padreinmediato) {
+		vector <int> child;
+		for(int i = 0; i<pinmediato.size(); i++){
+			if (padreinmediato == pinmediato[i] && padreinmediato !=i) {
+				child.push_back(i);
 			}
-			else {
-				return MAX;
-			}
+		}
+		return child;
 	}
 
 	bool UnionFind::isSameSet(int i, int j) {
@@ -99,8 +102,8 @@ public:
 	}
 	vector <int> UnionFind::getPadres() {
 		vector <int> padres;
-		for (int i = 0; i < p.size(); i++) {
-			if (p[i] == i) {
+		for (int i = 0; i < pinmediato.size(); i++) {
+			if (pinmediato[i] == i) {
 				padres.push_back(i);
 			}
 		}

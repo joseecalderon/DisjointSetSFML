@@ -20,7 +20,7 @@ public:
 	float y = 0;
 	string num = "";
 	sf::Font fuente;
-
+	vector <Nodo*> nodoHijo;
 
 public:
 	Nodo() {}
@@ -35,31 +35,35 @@ public:
 	void paint(sf::RenderWindow* window);
 };
 void Nodo::paint(sf::RenderWindow* window){
-	alto = 100;
-	ancho = 150;
 	sf::Text numCirculo;
 	sf::String cadenaNum;
 
+	//Dibujar las líneas
+	for (int i = 0; i < nodoHijo.size(); i++)
+	{
+		sf::Vertex line[] =
+		{
+			sf::Vertex(sf::Vector2f(this->x + ancho / 2, this->y + alto / 2)),
+			sf::Vertex(sf::Vector2f(nodoHijo[i]->x + ancho / 2, nodoHijo[i]->y + alto / 2))
+		};
+		window->draw(line, 2, sf::Lines);
+	}
+
 	sf::CircleShape shape(25);
-	shape.setFillColor(sf::Color::Green);
+	shape.setFillColor(sf::Color::White);
 	shape.setPosition(this->x, this->y);
 	window->draw(shape);
-	// Damos un valor a la cadena
+	
+	//Seteando los números para cada círculo (shape)
 	cadenaNum = num;
-	// Asignamos la cadena al texto
 	numCirculo.setString(cadenaNum);
-	// Asignamos la fuente que hemos cargado al texto
+	
 	numCirculo.setFont(fuente);
-	// Tamaño de la fuente
 	numCirculo.setCharacterSize(20);
-	// Color al texto
 	numCirculo.setFillColor(sf::Color::Black);
-	// Posicion del texto
-	numCirculo.setPosition(ancho - 45, alto + 18);
-	//MANDAS A LA VENTANA EL NUMERO
+	numCirculo.setPosition(this-> x + 15, this-> y + 15);
 	window->draw(numCirculo);
-
-};
+}
 
 struct Move {
 	float x = 0;
