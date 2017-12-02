@@ -62,7 +62,7 @@ int main() {
 	//Creando un objeto para realizar el algoritmo
 	UnionFind us;
 	int width, height;
-
+	bool asd;
 	//Creando los nodos y seteando los valores necesarios
 	us.makeSet(9);
 
@@ -72,6 +72,8 @@ int main() {
 	us.unionSet(8, 0);
 	us.unionSet(7, 3);
 	us.unionSet(4, 6);
+
+	asd = us.isSameSet(5, 1);
 	/*
 	cout << us.findSet(7);
 	cout << us.findSet(2);
@@ -107,8 +109,8 @@ int main() {
 	cxt.nodos = &nodos;
 	cxt.height = height;
 	cxt.width = width;
-	std::thread moving(mover, &movimientos);
-	std::thread run_algoritmo(mi_algoritmo, &cxt);
+	//std::thread moving(mover, &movimientos);
+	//std::thread run_algoritmo(mi_algoritmo, &cxt);
 
 	while (window.isOpen())
 	{
@@ -129,8 +131,8 @@ int main() {
 
 		
 	}
-	moving.detach();
-	run_algoritmo.detach();
+	//moving.detach();
+	//run_algoritmo.detach();
 
 	return 0;
 }

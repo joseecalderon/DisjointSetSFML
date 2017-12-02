@@ -9,7 +9,7 @@
 using namespace std;
 class UnionFind {
 public:
-	vector<int> p, rank, setSizes, maxSizes;
+	vector<int> p, rank, setSizes, maxSizes, pinmediato;
 	int numSets;
 public:
 	//Constructor
@@ -17,35 +17,58 @@ public:
 		int p = { 0 };
 		int rank = { 0 };
 		int setSizes = { 0 };
+		int maxSizes = { 0 };
+		int pinmediato = { 0 };
 		numSets = 0;
 	}
 
 	//Métodos a ser usados en el algoritmo
 	void makeSet(int N);
 	int findSet(int i);
+	int findSetPinmediato(int i);
 	bool isSameSet(int i, int j);
 	void unionSet(int i, int j);
+	void unionSimple(int i, int j);
 	int setSize(int i);
 	int numDisjointSets();
 	vector <int> getPadres();
+	int getChildren(int i);
 };
 
 	void UnionFind::makeSet(int N) {
 		numSets = N;
 		rank.assign(N, 0);
 		p.assign(N, 0);
-		for (int i = 0; i < N; i++)
+		pinmediato.assign(N, 0);
+		for (int i = 0; i < N; i++) {
 			p[i] = i;
+			pinmediato[i] = i;
+		}
 		setSizes.assign(N, 1);
 	}
 
 	int UnionFind::findSet(int i) {
 		return (p[i] == i) ? i : p[i] = findSet(p[i]);
 	}
+
+	int UnionFind::findSetPinmediato(int i) {
+		return (pinmediato[i] == i) ? i : findSetPinmediato(pinmediato[i]);
+	}
+	int UnionFind::getChildren(int i) {
+		int MAX = 0;
+			if (p[i] != i) {
+				return MAX = setSizes[i]-1;
+			}
+			else {
+				return MAX;
+			}
+	}
+
 	bool UnionFind::isSameSet(int i, int j) {
 		return findSet(i) == findSet(j);
 	}
 	void UnionFind::unionSet(int i, int j) {
+		unionSimple(i,j);
 		if (!isSameSet(i, j)) {
 			int x = findSet(i), y = findSet(j);
 			if (rank[x] > rank[y]) {
@@ -61,6 +84,13 @@ public:
 			numSets--;
 		}
 	}
+
+	void UnionFind::unionSimple(int i, int j) {
+		int xRoot = findSetPinmediato(i);    //Obtengo la raiz de la componente del vértice X
+		int yRoot = findSetPinmediato(j);    //Obtengo la raiz de la componente del vértice Y
+		pinmediato[xRoot] = yRoot;   //Mezclo ambos arboles o conjuntos, actualizando su padre de alguno de ellos como la raiz de otro
+	}
+
 	int UnionFind::setSize(int i) {
 		return setSizes[findSet(i)];
 	}
