@@ -50,7 +50,7 @@ void dibujarPosicion(int padre, float x, float y, float ancho, Contexto cx) {
 		int xInicio = x + (anchoBloque * i);
 		int altoNodo = (*cx.nodos)[nodos[i]]->alto;
 		int nodoX = xInicio + (anchoBloque / 2) - (altoNodo / 2);
-		cx.movimientos->push(new Move(nodoX, y, 1, 1, cx.nodos->at(nodos[i])));
+		cx.movimientos->push(new Move(nodoX, y, 0.3, 0.3, cx.nodos->at(nodos[i])));
 		//Dibujas hijos
 		dibujarPosicion(nodos[i], xInicio, y + altoNodo + 100, anchoBloque, cx);
 	}
